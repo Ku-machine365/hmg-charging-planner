@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<title>무의식 충전 플래너 — 차량 화면 목업</title>
+<style>
+ html,body{margin:0;background:#0b0f14;color:#e8eef5;font-family:-apple-system,"Apple SD Gothic Neo","Pretendard",sans-serif}
+ .screen{width:1280px;height:720px;position:relative;overflow:hidden;background:linear-gradient(160deg,#0f1620,#0b0f14)}
+ .top{position:absolute;left:0;right:0;top:0;height:64px;display:flex;align-items:center;padding:0 32px;gap:18px;border-bottom:1px solid #1e2a38}
+ .top .clock{font-size:22px;font-weight:600}
+ .top .soc{margin-left:auto;font-size:20px;display:flex;align-items:center;gap:10px}
+ .bar{width:160px;height:14px;border:2px solid #4a90e2;border-radius:4px;position:relative}
+ .bar i{position:absolute;left:0;top:0;bottom:0;background:#4a90e2;border-radius:2px}
+ .title{position:absolute;left:32px;top:84px;font-size:30px;font-weight:700}
+ .sub{position:absolute;left:32px;top:126px;font-size:18px;color:#8fa3b8}
+ .tl{position:absolute;left:32px;top:176px;right:460px;bottom:24px;display:flex;flex-direction:column;gap:10px}
+ .card{display:flex;align-items:center;gap:16px;padding:12px 18px;border-radius:12px;background:#16202c;border:1px solid #223042;opacity:0;transform:translateY(8px);transition:all .25s}
+ .card.on{opacity:1;transform:none}
+ .card .t{width:110px;font-size:18px;color:#8fa3b8}
+ .card .n{font-size:20px;flex:1}
+ .card .m{font-size:16px;color:#8fa3b8}
+ .card.drive{background:#121a24}
+ .card.charge{background:#10301f;border-color:#2e8b57}
+ .card.charge .n{color:#7CFC9A}
+ .card.slot{border-color:#3c5a7a}
+ .panel{position:absolute;right:32px;top:176px;width:400px;bottom:24px;border-radius:14px;background:#111926;border:1px solid #223042;padding:20px;box-sizing:border-box}
+ .panel h3{margin:0 0 10px;font-size:18px;color:#8fa3b8;font-weight:500}
+ .say{font-size:22px;line-height:1.45;min-height:120px}
+ .btn{margin-top:18px;display:inline-block;padding:12px 22px;border-radius:10px;background:#4a90e2;color:#fff;font-size:20px;font-weight:600;opacity:.35}
+ .btn.on{opacity:1}
+ .foot{position:absolute;right:40px;bottom:30px;font-size:14px;color:#55687c}
+ .badge{position:absolute;left:32px;bottom:30px;font-size:14px;color:#55687c}
+</style></head><body>
+<div class="screen">
+ <div class="top"><div class="clock" id="clock">--:--</div><div style="color:#8fa3b8">Pleos 차량 앱 목업 · 수치는 전부 예시</div>
+  <div class="soc">SoC <b id="socv">--%</b><div class="bar"><i id="socbar" style="width:0%"></i></div></div></div>
+ <div class="title" id="title"></div><div class="sub" id="sub"></div>
+ <div class="tl" id="tl"></div>
+ <div class="panel"><h3>음성 안내(TTS 문구)</h3><div class="say" id="say"></div><div class="btn" id="btn">승인</div></div>
+ <div class="badge">엔진: planner.py (github.com/Ku-machine365/hmg-charging-planner) · 거리=직선×1.3 가정</div>
+ <div class="foot">현대자동차그룹 차량용 앱 개발 공모전 2026 · 시연</div>
+</div>
+<script src="data.js"></script>
+<script>
+const q=new URLSearchParams(location.search);
+const sc=window.SCENARIOS[+(q.get('scene')||0)]; const step=+(q.get('step')||0);
+document.getElementById('title').textContent=sc.title; document.getElementById('sub').textContent=sc.subtitle;
+const tl=document.getElementById('tl'); let soc=sc.start_soc, clock='09:00', say='내일 일정 3건을 읽었습니다. 계획을 세우는 중…';
+const items=sc.timeline.filter(t=>t.type!=='start');
+items.forEach((t,i)=>{
+ const d=document.createElement('div'); d.className='card '+t.type+(t.slot?' slot':'');
+ if(t.type==='drive') d.innerHTML=`<div class="t">이동</div><div class="n">→ ${t.to}</div><div class="m">${t.km}km · ${t.min}분 · 도착 SoC ${t.soc}%</div>`;
+ else if(t.type==='event') d.innerHTML=`<div class="t">${t.time}~${t.end}</div><div class="n">${t.name}</div><div class="m">${t.slot?'식사·카페 슬롯':''}</div>`;
+ else if(t.type==='charge') d.innerHTML=`<div class="t">⚡ ${t.start}~${t.end}</div><div class="n">${t.station} · ${t.minutes}분 충전</div><div class="m">${t.during} 중 · SoC ${t.soc_after}%</div>`;
+ if(i<step){d.classList.add('on');
+  if(t.type==='drive'){soc=t.soc;clock=t.time;say=`${t.to}까지 ${t.km}km, 약 ${t.min}분. 도착 시 배터리 ${t.soc}%입니다.`}
+  if(t.type==='event'){say=t.slot?`${t.name} 일정입니다. 식사·카페 시간대라 충전을 끼워 넣을 수 있는지 봅니다.`:`${t.name} 일정입니다.`}
+  if(t.type==='charge'){soc=t.soc_after;say=`${t.during} 중에 ${t.station}에서 ${t.minutes}분 충전합니다. ${t.reason}.`}
+ }
+ tl.appendChild(d);
+});
+if(step>items.length){say=sc.charges.length?`계획 완료. 충전 ${sc.charges.length}회, 귀가 시 배터리 ${sc.final_soc}%. 승인하시면 내일 시동 시 경로를 준비합니다.`:`계획 완료. 충전 없이 귀가 시 배터리 ${sc.final_soc}%입니다. 충전을 끼워 넣지 않습니다.`; document.getElementById('btn').classList.add('on');}
+document.getElementById('say').textContent=say; document.getElementById('clock').textContent=clock;
+document.getElementById('socv').textContent=soc.toFixed(0)+'%'; document.getElementById('socbar').style.width=Math.max(0,Math.min(100,soc))+'%';
+</script></body></html>
