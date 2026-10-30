@@ -1,0 +1,11 @@
+시작 SoC 55.0% → 도착 SoC 26.1% (유지선 20.0%)
+  이동 → 점심 판교 53.0km·71분, 도착 SoC 36.7%
+  12:00~13:00 점심 판교 [슬롯]
+  ⚡ 12:05~12:11 판교 A 급속(예시) 6분 (점심 판교 중) → SoC 54.0% — 가장 가까움
+  이동 → 양평 카페 30.3km·40분, 도착 SoC 43.5%
+  15:00~16:30 양평 카페 [슬롯]
+  이동 → 저녁 귀가 50.5km·67분, 도착 SoC 26.1%
+  19:00~19:30 저녁 귀가 [슬롯]
+충전 1회
+saved results/2026-10-30.json
+python3 -I planner.py --ics samples/day1.ics --stations samples/stations.json  0.03s user 0.01s system 94% cpu 0.037 total

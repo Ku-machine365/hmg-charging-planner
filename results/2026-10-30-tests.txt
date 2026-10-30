@@ -1,0 +1,14 @@
+/Users/pose/projects/programs/hmg-charging-planner/tests/test_smoke.py:35: ResourceWarning: unclosed file <_io.TextIOWrapper name='/Users/pose/projects/programs/hmg-charging-planner/tests/../samples/stations.json' mode='r' encoding='utf-8'>
+  st = json.load(open(STA, encoding='utf-8'))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/pose/projects/programs/hmg-charging-planner/planner.py:26: ResourceWarning: unclosed file <_io.TextIOWrapper name='/Users/pose/projects/programs/hmg-charging-planner/tests/../samples/day1.ics' mode='r' encoding='utf-8'>
+  text = open(path, encoding='utf-8').read().replace('\r\n', '\n')
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./Users/pose/projects/programs/hmg-charging-planner/tests/test_smoke.py:14: ResourceWarning: unclosed file <_io.TextIOWrapper name='/Users/pose/projects/programs/hmg-charging-planner/tests/../samples/stations.json' mode='r' encoding='utf-8'>
+  st = stations or json.load(open(STA, encoding='utf-8'))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+..
+----------------------------------------------------------------------
+Ran 3 tests in 0.006s
+
+OK

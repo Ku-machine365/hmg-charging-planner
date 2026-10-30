@@ -17,12 +17,22 @@
 4. 샘플 1건 실행 시간 < 1초(time 측정)
 
 ## 측정법
-- 명령: `python3 -I -m unittest discover -s tests` / `time python3 -I planner.py --ics samples/day1.ics --stations samples/stations.json --soc 55 --out results/2026-MM-DD.json`
+- 명령: `python3 -I -m unittest discover -s tests` / `time python3 -I planner.py --ics samples/day1.ics --stations samples/stations.json --soc 55 --origin 37.38,126.65 --out results/2026-MM-DD.json`
 - 원시 결과 저장: `results/<날짜>.json`, 테스트 출력 `results/<날짜>-tests.txt`
 - 센 것: 통과 테스트 수 / 타임라인 충전 항목의 필드 수 / 실행 초
 
 ## 변경
 _(결과를 본 뒤 기준을 바꾸면 날짜·이유와 함께 여기에만 추가. 원래 기준은 지우지 않는다)_
+- 2026-10-30 20:5x: 첫 실행(출발지=첫 일정 장소, 배터리 77.4kWh·전비 0.18 가정)에서 SoC 55→36%로 충전이 필요 없어 시험 1·3이 성립하지 않았다. **성공 기준은 그대로 두고 시험 대상의 샘플 가정만 고정**: 출발지 인천 송도(37.38,126.65, 예시) 추가(`--origin`), 배터리 58kWh·전비 0.20kWh/km(스탠다드 급 가정). 기준 1~4는 변경 없음.
 
 ## 판정
-_(측정 후 작성: 기준별 PASS/FAIL, 그리고 '규칙 밖 판단'은 따로)_
+측정 2026-10-30 20:5x KST (results/2026-10-30-tests.txt, results/2026-10-30.json, results/2026-10-30-run.txt)
+1. 테스트 3/3 통과 — **PASS** (Ran 3 tests … OK)
+2. 충전 항목 필드: station·start·end·minutes·reason·during·kw·soc_after·distance_km 전부 있음(누락 0) — **PASS**
+3. `--help` rc=0, import는 argparse/json/math/re/sys/datetime(표준 라이브러리만) — **PASS**
+4. 샘플 1건 실행 0.037초(time total) — **PASS**
+
+규칙 밖 판단:
+- 첫 실행에서 샘플 가정(출발지=첫 일정, 77.4kWh)으로는 충전이 필요 없었고, 가정을 바꿔서(`## 변경`) 시험이 성립했다. 엔진 로직은 바뀌지 않았지만 "시험 대상"을 결과를 본 뒤 조정한 것이므로 v1 판정은 **조건부 PASS**로 본다.
+- 충전 시간 6분은 '유지선+5%'까지만 채우는 최소 규칙 때문이며, 실제 UX는 식사 슬롯을 채우는 쪽(예: 30~40분)이 자연스럽다. v2 PREREG 항목.
+- 거리·소요시간은 직선×1.3 계수이고 내비 호출(NaviHelper)·실제 충전소 상태(API)는 미연결. 공모전 시연용 수치는 전부 예시.

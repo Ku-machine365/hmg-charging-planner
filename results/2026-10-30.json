@@ -1,0 +1,93 @@
+{
+ "start_soc": 55.0,
+ "final_soc": 26.1,
+ "reserve_soc": 20.0,
+ "deficit_without_charge": -11.1,
+ "charges": [
+  {
+   "type": "charge",
+   "station": "판교 A 급속(예시)",
+   "start": "12:05",
+   "end": "12:11",
+   "minutes": 6,
+   "kw": 100.0,
+   "soc_after": 54.0,
+   "reason": "가장 가까움",
+   "during": "점심 판교",
+   "distance_km": 0.2
+  }
+ ],
+ "timeline": [
+  {
+   "type": "start",
+   "time": null,
+   "soc": 55.0,
+   "note": "시작 SoC 55%"
+  },
+  {
+   "type": "drive",
+   "time": "12:00",
+   "to": "점심 판교",
+   "km": 53.0,
+   "min": 71,
+   "soc": 36.7
+  },
+  {
+   "type": "event",
+   "time": "12:00",
+   "end": "13:00",
+   "name": "점심 판교",
+   "slot": true
+  },
+  {
+   "type": "charge",
+   "station": "판교 A 급속(예시)",
+   "start": "12:05",
+   "end": "12:11",
+   "minutes": 6,
+   "kw": 100.0,
+   "soc_after": 54.0,
+   "reason": "가장 가까움",
+   "during": "점심 판교",
+   "distance_km": 0.2
+  },
+  {
+   "type": "drive",
+   "time": "15:00",
+   "to": "양평 카페",
+   "km": 30.3,
+   "min": 40,
+   "soc": 43.5
+  },
+  {
+   "type": "event",
+   "time": "15:00",
+   "end": "16:30",
+   "name": "양평 카페",
+   "slot": true
+  },
+  {
+   "type": "drive",
+   "time": "19:00",
+   "to": "저녁 귀가",
+   "km": 50.5,
+   "min": 67,
+   "soc": 26.1
+  },
+  {
+   "type": "event",
+   "time": "19:00",
+   "end": "19:30",
+   "name": "저녁 귀가",
+   "slot": true
+  }
+ ],
+ "ok": true,
+ "assumptions": {
+  "battery_kwh": 58.0,
+  "kwh_per_km": 0.2,
+  "road_factor": 1.3,
+  "avg_kmh": 45.0,
+  "charge_kw": 100.0
+ }
+}

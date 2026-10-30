@@ -17,7 +17,8 @@
 ## 사용법
 ```sh
 python3 -I planner.py --help
-python3 -I planner.py --ics samples/day1.ics --stations samples/stations.json --soc 55
+python3 -I planner.py --ics samples/day1.ics --stations samples/stations.json --soc 55 --origin 37.38,126.65
+python3 -I planner.py --ics samples/day1.ics --stations samples/stations.json --soc 55 --origin 37.38,126.65 --block '판교 A 급속(예시)'
 ```
 
 ## 안전
