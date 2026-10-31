@@ -24,3 +24,7 @@ python3 -I planner.py --ics samples/day1.ics --stations samples/stations.json --
 ## 안전
 - 외부 코드 실행 0. 네트워크: 없음(샘플 파일만 읽음). 쓰기: `results/` 아래 출력 파일만.
 - 원격 push·GitHub 공개는 Master 승인 전 금지(programs/README 규칙). 공개 시 개인정보·연락처 0건 확인 후.
+
+## 시연 영상 (Demo)
+- GitHub Release 첨부: https://github.com/Ku-machine365/hmg-charging-planner/releases/tag/v0.1-demo (demo-v1.mp4, 67초, 1280×720, 무음)
+- 내용: HTML 차량 화면 목업 + planner.py 3시나리오(SoC 55% 점심 슬롯 충전 / SoC 90% 충전 생략 / 장거리 경로 충전)
